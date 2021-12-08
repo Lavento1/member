@@ -48,5 +48,5 @@ def select_member():
 
 
 # create_table()
-# insert_member('10002', 'm1234', '팥쥐', 19)
+# insert_member('20001', 'm1234', '흥부', 35)
 select_member()
