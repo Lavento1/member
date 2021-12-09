@@ -2,11 +2,17 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원목록</title>
+    <title>회원 목록</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="container">
+        {% if ssid == null %}   <!-- 로그인 하지 않았다면 -->
+        <script>
+            alert('먼저 로그인 해 주세요.');
+            location.href = '/login/';  // 경로 이동 객체
+        </script>
+        {% endif %}
         {% include 'nav_bar.html' %}
         <section>
             <h1>회원 목록</h1>

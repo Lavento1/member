@@ -167,3 +167,23 @@ section .login ul input[type='submit']{
     width: 100px;
     height: 30px;
 }
+
+/* member_edit 스타일 */
+section .tbl_edit{
+    width: 450px;
+}
+
+section .tbl_edit input{
+    width: 200px;
+    height: 30px;
+}
+
+section .tbl_edit input[type='submit']{
+    width: 100px;
+    height: 30px;
+}
+
+section .tbl_edit input[type='reset']{
+    width: 100px;
+    height: 30px;
+}
