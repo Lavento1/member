@@ -47,6 +47,16 @@ def select_member():
     conn.close()
 
 
+def delete_member():
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "DELETE FROM member"
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+
+
 # create_table()
 # insert_member('20001', 'm1234', '흥부', 35)
+delete_member()
 select_member()

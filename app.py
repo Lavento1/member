@@ -58,15 +58,25 @@ def register():
         pwd = request.form['passwd']
         name = request.form['name']
         age = request.form['age']
-        date = request.form['regDate']
+        # date = request.form['regDate']
 
         conn = getconn()
         cur = conn.cursor()
-        sql = "INSERT INTO member VALUES ('%s', '%s', '%s', '%s', '%s')" \
-              % (id, pwd, name, age, date)
+        sql = "INSERT INTO member(mid, passwd, name, age) VALUES ('%s', '%s', '%s', '%s')" \
+              % (id, pwd, name, age)
         cur.execute(sql)
         conn.commit()
+
+        # 가입 후 자동 로그인
+        sql = "SELECT * FROM member WHERE mid = '%s' " % id
+        cur.execute(sql)
+        rs = cur.fetchone()
         conn.close()
+
+        if rs:
+            session['userID'] = id
+            # 자동 로그인 시 세션 발급 필수
+            return redirect(url_for('member_list'))
         return redirect(url_for('member_list'))  # url 경로로 이동
     else:
         return render_template('register.html')  # GET 방식
@@ -97,7 +107,9 @@ def login():
 
 @app.route('/logout/')
 def logout():
-    session.pop('userID')   # 세션 삭제
+    # session.pop('userID')   # userID 세션 삭제
+    # 전체의 세션 삭제
+    session.clear()
     return redirect(url_for('index'))
 
 
