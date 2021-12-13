@@ -15,13 +15,22 @@ def create_table():
             passwd CHAR(8) NOT NULL,
             name TEXT NOT NULL,
             age INTEGER,
-            regDate DATETIME DEFAULT CURRENT_TIMESTAMP
+            regDate TIMESTAMP DATE DEFAULT (datetime('now', 'localtime'))
         );
     """
 
     cur.execute(sql)
     conn.commit()
     print("member 테이블 생성 완료")
+    conn.close()
+
+
+def drop_table():
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "DROP TABLE member"
+    cur.execute(sql)
+    conn.commit()
     conn.close()
 
 
@@ -57,6 +66,7 @@ def delete_member():
 
 
 # create_table()
-# insert_member('20001', 'm1234', '흥부', 35)
-delete_member()
-select_member()
+# drop_table()
+insert_member('cloud', 'm123456@', '구름', 100)
+# delete_member()
+# select_member()

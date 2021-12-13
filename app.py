@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "rlawlsxo"     # 암호키 설정
+app.secret_key = "rlawlsxo"  # 암호키 설정
 
 
 def getconn():
@@ -10,10 +10,10 @@ def getconn():
     return conn
 
 
-@app.route('/')     # 127.0.0.1:5000
+@app.route('/')  # 127.0.0.1:5000
 def index():
-    if 'userID' in session:     # session에 userID가 존재하면
-        ssid = session.get('userID')    # 세션을 가져옴
+    if 'userID' in session:  # session에 userID가 존재하면
+        ssid = session.get('userID')  # 세션을 가져옴
         return render_template('index.html', ssid=ssid)
     else:
         return render_template('index.html')
@@ -28,26 +28,18 @@ def member_list():
     cur.execute(sql)
     rs = cur.fetchall()
     conn.close()
-    if 'userID' in session:     # session에 userID가 존재하면
-        ssid = session.get('userID')    # 세션을 가져옴
-        return render_template('member_list.html', ssid=ssid, rs=rs)
-    else:
-        return render_template('member_list.html')
+    return render_template('member_list.html', rs=rs)
 
 
 @app.route('/member_view/<string:id>/')
-def member_view(id):    # mid를 경로로 설정하고 매개변수로 넘겨줌
+def member_view(id):  # mid를 경로로 설정하고 매개변수로 넘겨줌
     conn = getconn()
     cur = conn.cursor()
     sql = "SELECT * FROM member WHERE mid = '%s' " % id
     cur.execute(sql)
-    rs = cur.fetchone()     # 해당 1개의 자료를 반환
+    rs = cur.fetchone()  # 해당 1개의 자료를 반환
     conn.close()
-    if 'userID' in session:     # session에 userID가 존재하면
-        ssid = session.get('userID')    # 세션을 가져옴
-        return render_template('member_view.html', ssid=ssid, rs=rs)
-    else:
-        return render_template('member_view.html', rs=rs)
+    return render_template('member_view.html', rs=rs)
 
 
 @app.route('/register/', methods=['GET', 'POST'])
@@ -62,7 +54,7 @@ def register():
 
         conn = getconn()
         cur = conn.cursor()
-        sql = "INSERT INTO member(mid, passwd, name, age) VALUES ('%s', '%s', '%s', '%s')" \
+        sql = "INSERT INTO member(mid, passwd, name, age) VALUES ('%s', '%s', '%s', %s)" \
               % (id, pwd, name, age)
         cur.execute(sql)
         conn.commit()
@@ -132,12 +124,11 @@ def member_edit(id):
         pwd = request.form['passwd']
         name = request.form['name']
         age = request.form['age']
-        date = request.form['regDate']
 
         conn = getconn()
         cur = conn.cursor()
-        sql = "UPDATE member SET passwd = '%s', name = '%s', age = '%s', regDate = '%s' " \
-            "WHERE mid = '%s' " % (pwd, name, age, date, id)
+        sql = "UPDATE member SET passwd = '%s', name = '%s', age = %s " \
+              "WHERE mid = '%s' " % (pwd, name, age, id)
         cur.execute(sql)
         conn.commit()
         conn.close()
@@ -150,11 +141,42 @@ def member_edit(id):
         cur.execute(sql)
         rs = cur.fetchone()
         conn.close()
-        if 'userID' in session:
-            ssid = session.get('userID')
-            return render_template('member_edit.html', rs=rs, ssid=ssid)
-        else:
-            return render_template('member_edit.html')
+        return render_template('member_edit.html', rs=rs)
+
+
+# 게시판 목록
+@app.route('/board_list/')
+def board_list():
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "SELECT * FROM board ORDER BY bno DESC"
+    cur.execute(sql)
+    rs = cur.fetchall()
+    conn.close()
+    return render_template('board_list.html', rs=rs)
+
+
+# 게시글 작성
+@app.route('/writing/', methods=['GET', 'POST'])
+def writing():
+    if request.method == "POST":
+        # 자료 전달받음
+        title = request.form['title']
+        content = request.form['content']
+        mid = session.get('userID')  # 글쓴이 - 로그인한 mid(세션 권한 존재)
+
+        # db에 글 추가
+        conn = getconn()
+        cur = conn.cursor()
+        sql = "INSERT INTO board(title, content, mid) VALUES ('%s', '%s', '%s') " % \
+              (title, content, mid)
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('board_list'))
+    else:
+        return render_template('writing.html')
 
 
 app.run(debug=True)

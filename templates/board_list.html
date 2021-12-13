@@ -2,29 +2,36 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원 목록</title>
+    <title>게시판 목록</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="container">
         {% include 'nav_bar.html' %}
         <section>
-            <h1>회원 목록</h1>
+            <h1>게시판 목록</h1>
             <table>
                 <tr>
-                    <th>아이디</th><th>패스워드</th><th>이름</th><th>나이</th><th>가입일</th>
+                    <th>번호</th><th>제목</th><th>작성일</th><th>작성자</th>
                 </tr>
                 {% for i in rs %}
                 <tr>
-                    <td><a href="{{ url_for('member_view', id=i[0]) }}">{{ i[0] }}</a></td>
+                    <td>{{ i[0] }}</td>
                     <td>{{ i[1] }}</td>
-                    <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
                     <td>{{ i[4] }}</td>
                 </tr>
                 {% endfor %}
             </table>
+            <div class="btn_write">
+                <input type="button" value="글쓰기" onclick="goWrite()">
+            </div>
         </section>
     </div>
+    <script>
+        function goWrite(){
+            location.href = '/writing/'
+        }
+    </script>
 </body>
 </html>
