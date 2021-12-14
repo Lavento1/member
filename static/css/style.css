@@ -189,6 +189,24 @@ section .tbl_edit input[type='reset']{
 }
 
 /* board_list 스타일 */
+section .tbl_bo_list{
+    width: 700px;
+    margin: 0 auto;
+}
+
+section .tbl_bo_list tr td:nth-child(2){
+    text-align: left;
+}
+section .tbl_bo_list a{
+    text-decoration: none;
+    color: #000
+}
+
+section .tbl_bo_list a:hover{
+    text-decoration: underline;
+    color: #000
+}
+
 section .btn_write{
     text-align: right;
     margin: 15px 200px;
@@ -218,4 +236,24 @@ section .writing textarea{
 section .writing input[type='submit'], [type='reset']{
     width: 100px;
     height: 30px;
+}
+
+/* board_view 스타일 */
+section .tbl_bo_view{
+    width: 600px;
+    margin: 0 auto;
+}
+
+section .tbl_bo_view input[type='text']{
+    width: 550px;
+    height: 50px;
+}
+
+section .tbl_bo_view textarea{
+    width: 550px;
+    height: 300px;
+}
+
+section .tbl_bo_view a{
+    color: #00f;
 }
