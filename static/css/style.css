@@ -233,7 +233,7 @@ section .writing textarea{
     height: 300px;
 }
 
-section .writing input[type='submit'], [type='reset']{
+section .writing input[type='button'], [type='reset']{
     width: 100px;
     height: 30px;
 }
@@ -256,4 +256,10 @@ section .tbl_bo_view textarea{
 
 section .tbl_bo_view a{
     color: #00f;
+}
+
+/* board_edit 스타일 */
+section .tbl_bo_view input[type='submit'], input[type='reset']{
+    width: 100px;
+    height: 30px;
 }
