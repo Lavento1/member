@@ -65,8 +65,8 @@ def delete_member():
     conn.close()
 
 
-# create_table()
+create_table()
 # drop_table()
-insert_member('cloud', 'm123456@', '구름', 100)
+# insert_member('cloud', 'm123456@', '구름', 100)
 # delete_member()
 # select_member()

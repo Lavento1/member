@@ -15,14 +15,24 @@ def create_table():
             title TEXT NOT NULL,
             content TEXT NOT NULL,
             create_date TIMESTAMP DATE DEFAULT (datetime('now', 'localtime')),
+            hit INTEGER,
             mid CHAR(5) NOT NULL,
-            FOREIGN KEY(mid) REFERENCES member(mid)
+            FOREIGN KEY(mid) REFERENCES member(mid) ON DELETE CASCADE
         );
     """
     # bno - 글번호, tilte - 글제목, content - 글 내용, create_date(작성일), mid-회원번호(FK)
     cur.execute(sql)
     conn.commit()
     print("board 테이블 생성!!")
+    conn.close()
+
+
+def drop_board():
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "DROP TABLE board"
+    cur.execute(sql)
+    conn.commit()
     conn.close()
 
 
@@ -42,10 +52,12 @@ def select_board():
     sql = "SELECT * FROM board"
     cur.execute(sql)
     rs = cur.fetchall()
-    print(rs)
+    for i in rs:
+        print(i)
     conn.close()
 
 
-# create_table()
+create_table()
+# drop_board()
 # insert_board('제목1', '내용입니다.', 'cloud')
-select_board()
+# select_board()
